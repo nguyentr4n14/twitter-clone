@@ -13,7 +13,7 @@ const NotificationPage = () => {
             from: {
                 _id: '1',
                 username: 'johndoe',
-                profileImg: '/avatars/boy2.png',
+                profileImage: '/avatars/boy2.png',
             },
             type: 'follow',
         },
@@ -22,7 +22,7 @@ const NotificationPage = () => {
             from: {
                 _id: '2',
                 username: 'janedoe',
-                profileImg: '/avatars/girl1.png',
+                profileImage: '/avatars/girl1.png',
             },
             type: 'like',
         },
@@ -80,7 +80,8 @@ const NotificationPage = () => {
                                     <div className="w-8 rounded-full">
                                         <img
                                             src={
-                                                notification.from.profileImg ||
+                                                notification.from
+                                                    .profileImage ||
                                                 '/avatar-placeholder.png'
                                             }
                                         />

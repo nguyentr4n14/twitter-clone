@@ -13,12 +13,12 @@ import { FaLink } from 'react-icons/fa';
 import { MdEdit } from 'react-icons/md';
 
 const ProfilePage = () => {
-    const [coverImg, setCoverImg] = useState(null);
-    const [profileImg, setProfileImg] = useState(null);
+    const [coverImage, setCoverImage] = useState(null);
+    const [profileImage, setProfileImage] = useState(null);
     const [feedType, setFeedType] = useState('posts');
 
-    const coverImgRef = useRef(null);
-    const profileImgRef = useRef(null);
+    const coverImageRef = useRef(null);
+    const profileImageRef = useRef(null);
 
     const isLoading = false;
     const isMyProfile = true;
@@ -27,21 +27,21 @@ const ProfilePage = () => {
         _id: '1',
         fullName: 'John Doe',
         username: 'johndoe',
-        profileImg: '/avatars/boy2.png',
-        coverImg: '/cover.png',
+        profileImage: '/avatars/boy2.png',
+        coverImage: '/cover.png',
         bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
         link: 'https://youtube.com/@asaprogrammer_',
         following: ['1', '2', '3'],
         followers: ['1', '2', '3'],
     };
 
-    const handleImgChange = (e, state) => {
+    const handleImageChange = (e, state) => {
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
             reader.onload = () => {
-                state === 'coverImg' && setCoverImg(reader.result);
-                state === 'profileImg' && setProfileImg(reader.result);
+                state === 'coverImage' && setCoverImage(reader.result);
+                state === 'profileImage' && setProfileImage(reader.result);
             };
             reader.readAsDataURL(file);
         }
@@ -75,8 +75,8 @@ const ProfilePage = () => {
                             <div className="relative group/cover">
                                 <img
                                     src={
-                                        coverImg ||
-                                        user?.coverImg ||
+                                        coverImage ||
+                                        user?.coverImage ||
                                         '/cover.png'
                                     }
                                     className="h-52 w-full object-cover"
@@ -86,7 +86,7 @@ const ProfilePage = () => {
                                     <div
                                         className="absolute top-2 right-2 rounded-full p-2 bg-gray-800 bg-opacity-75 cursor-pointer opacity-0 group-hover/cover:opacity-100 transition duration-200"
                                         onClick={() =>
-                                            coverImgRef.current.click()
+                                            coverImageRef.current.click()
                                         }
                                     >
                                         <MdEdit className="w-5 h-5 text-white" />
@@ -97,18 +97,18 @@ const ProfilePage = () => {
                                     type="file"
                                     accept="image/*"
                                     hidden
-                                    ref={coverImgRef}
+                                    ref={coverImageRef}
                                     onChange={(e) =>
-                                        handleImgChange(e, 'coverImg')
+                                        handleImageChange(e, 'coverImage')
                                     }
                                 />
                                 <input
                                     type="file"
                                     accept="image/*"
                                     hidden
-                                    ref={profileImgRef}
+                                    ref={profileImageRef}
                                     onChange={(e) =>
-                                        handleImgChange(e, 'profileImg')
+                                        handleImageChange(e, 'profileImage')
                                     }
                                 />
                                 {/* USER AVATAR */}
@@ -116,8 +116,8 @@ const ProfilePage = () => {
                                     <div className="w-32 rounded-full relative group/avatar">
                                         <img
                                             src={
-                                                profileImg ||
-                                                user?.profileImg ||
+                                                profileImage ||
+                                                user?.profileImage ||
                                                 '/avatar-placeholder.png'
                                             }
                                         />
@@ -126,7 +126,7 @@ const ProfilePage = () => {
                                                 <MdEdit
                                                     className="w-4 h-4 text-white"
                                                     onClick={() =>
-                                                        profileImgRef.current.click()
+                                                        profileImageRef.current.click()
                                                     }
                                                 />
                                             )}
@@ -146,7 +146,7 @@ const ProfilePage = () => {
                                         Follow
                                     </button>
                                 )}
-                                {(coverImg || profileImg) && (
+                                {(coverImage || profileImage) && (
                                     <button
                                         className="btn btn-primary rounded-full btn-sm text-white px-4 ml-2"
                                         onClick={() =>

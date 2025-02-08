@@ -87,7 +87,7 @@ const Sidebar = () => {
                             <div className="w-8 rounded-full">
                                 <img
                                     src={
-                                        authUser?.profileImg ||
+                                        authUser?.profileImage ||
                                         '/avatar-placeholder.png'
                                     }
                                 />

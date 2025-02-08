@@ -72,7 +72,7 @@ const Post = ({ post }) => {
                     >
                         <img
                             src={
-                                postOwner.profileImg ||
+                                postOwner.profileImage ||
                                 '/avatar-placeholder.png'
                             }
                         />
@@ -108,9 +108,9 @@ const Post = ({ post }) => {
                     </div>
                     <div className="flex flex-col gap-3 overflow-hidden">
                         <span>{post.text}</span>
-                        {post.img && (
+                        {post.image && (
                             <img
-                                src={post.img}
+                                src={post.image}
                                 className="h-80 object-contain rounded-lg border border-gray-700"
                                 alt=""
                             />
@@ -159,7 +159,7 @@ const Post = ({ post }) => {
                                                         <img
                                                             src={
                                                                 comment.user
-                                                                    .profileImg ||
+                                                                    .profileImage ||
                                                                 '/avatar-placeholder.png'
                                                             }
                                                         />

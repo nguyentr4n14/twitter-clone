@@ -3,30 +3,68 @@ import { BsEmojiSmileFill } from 'react-icons/bs';
 import { useRef, useState } from 'react';
 import { IoCloseSharp } from 'react-icons/io5';
 
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
+
 const CreatePost = () => {
     const [text, setText] = useState('');
-    const [img, setImg] = useState(null);
+    const [image, setImage] = useState(null);
+    const imageRef = useRef(null);
 
-    const imgRef = useRef(null);
+    const { data: authUser } = useQuery({ queryKey: ['authUser'] });
+    const queryClient = useQueryClient();
 
-    const isPending = false;
-    const isError = false;
+    const {
+        mutate: createPost,
+        isPending,
+        isError,
+        error,
+    } = useMutation({
+        mutationFn: async ({ text, image }) => {
+            try {
+                const res = await fetch('/api/posts/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ text, image }),
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    throw new Error(data.error || 'Something went wrong');
+                }
+
+                return data;
+            } catch (error) {
+                throw new Error(error);
+            }
+        },
+
+        onSuccess: () => {
+            setText('');
+            setImage(null);
+            toast.success('Post created successfully');
+            queryClient.invalidateQueries({ queryKey: ['posts'] });
+        },
+    });
 
     const data = {
-        profileImg: '/avatars/boy1.png',
+        profileImage: '/avatars/boy1.png',
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        alert('Post created successfully');
+        createPost({ text, image });
     };
 
-    const handleImgChange = (e) => {
+    const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
             reader.onload = () => {
-                setImg(reader.result);
+                setImage(reader.result);
             };
             reader.readAsDataURL(file);
         }
@@ -36,7 +74,9 @@ const CreatePost = () => {
         <div className="flex p-4 items-start gap-4 border-b border-gray-700">
             <div className="avatar">
                 <div className="w-8 rounded-full">
-                    <img src={data.profileImg || '/avatar-placeholder.png'} />
+                    <img
+                        src={authUser.profileImage || '/avatar-placeholder.png'}
+                    />
                 </div>
             </div>
             <form
@@ -49,17 +89,17 @@ const CreatePost = () => {
                     value={text}
                     onChange={(e) => setText(e.target.value)}
                 />
-                {img && (
+                {image && (
                     <div className="relative w-72 mx-auto">
                         <IoCloseSharp
                             className="absolute top-0 right-0 text-white bg-gray-800 rounded-full w-5 h-5 cursor-pointer"
                             onClick={() => {
-                                setImg(null);
-                                imgRef.current.value = null;
+                                setImage(null);
+                                imageRef.current.value = null;
                             }}
                         />
                         <img
-                            src={img}
+                            src={image}
                             className="w-full mx-auto h-72 object-contain rounded"
                         />
                     </div>
@@ -69,7 +109,7 @@ const CreatePost = () => {
                     <div className="flex gap-1 items-center">
                         <CiImageOn
                             className="fill-primary w-6 h-6 cursor-pointer"
-                            onClick={() => imgRef.current.click()}
+                            onClick={() => imageRef.current.click()}
                         />
                         <BsEmojiSmileFill className="fill-primary w-5 h-5 cursor-pointer" />
                     </div>
@@ -77,16 +117,14 @@ const CreatePost = () => {
                         type="file"
                         accept="image/*"
                         hidden
-                        ref={imgRef}
-                        onChange={handleImgChange}
+                        ref={imageRef}
+                        onChange={handleImageChange}
                     />
                     <button className="btn btn-primary rounded-full btn-sm text-white px-4">
                         {isPending ? 'Posting...' : 'Post'}
                     </button>
                 </div>
-                {isError && (
-                    <div className="text-red-500">Something went wrong</div>
-                )}
+                {isError && <div className="text-red-500">{error.message}</div>}
             </form>
         </div>
     );

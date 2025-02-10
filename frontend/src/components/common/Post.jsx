@@ -69,7 +69,7 @@ const Post = ({ post }) => {
                 throw new Error(error.message);
             }
         },
-        onSuccess: (updatedPost) => {
+        onSuccess: (updatedLikes) => {
             // This is not the best UX, because it will refetch all posts
             // queryClient.invalidateQueries({ queryKey: ['posts'] });
 
@@ -77,7 +77,7 @@ const Post = ({ post }) => {
             queryClient.setQueryData(['posts'], (oldData) => {
                 return oldData.map((p) => {
                     if (p._id === post._id) {
-                        return { ...p, likes: updatedPost.comments };
+                        return { ...p, likes: updatedLikes };
                     }
                     return p;
                 });

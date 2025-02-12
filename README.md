@@ -9,6 +9,10 @@ A full-stack Twitter clone built with the **MERN stack** (MongoDB, Express.js, R
 ## Demo
 
 🔗 **Live App**: [Twitter Clone](https://real-time-chat-app-fqbd.onrender.com)
+- Please wait 50 seconds for the server to turn on instance.
+Test accounts:
+- username: janedoe
+- Password: 123456
 
 ---
 
